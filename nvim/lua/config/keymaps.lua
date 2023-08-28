@@ -1,33 +1,81 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
+vim.keymap.set("i", "jk", "<Esc>")
+vim.keymap.set("n", "<leader>ef", ":Neotree<CR>", { silent = true })
+vim.keymap.set("n", "sd", ":w<CR>", { silent = true, desc = "Save" })
+vim.keymap.set(
+    "n",
+    "<leader>sx",
+    require("telescope.builtin").resume,
+    { noremap = true, silent = true, desc = "Resume" }
+)
 
+vim.g.mapleader = " "
+
+local keymap = vim.keymap -- for conciseness
+
+-- general keymaps
+keymap.set("i", "jk", "<ESC>")
+
+keymap.set("n", "<leader>nh", ":nohl<CR>")
+
+keymap.set("n", "<leader>+", "<C-a>")
+keymap.set("n", "<leader>-", "<C-x>")
+
+keymap.set("n", "<leader>sv", "<C-w>v") -- split window vertically
+keymap.set("n", "<leader>sh", "<C-w>s") -- split window horizontally
+keymap.set("n", "<leader>se", "<C-w>=") -- make split window equal width
+keymap.set("n", "<leader>sx", ":close<CR>") -- close current split window
+
+keymap.set("n", "<leader>to", ":tabnew<CR>") -- open new tab
+keymap.set("n", "<leader>tx", ":tabclose<CR>") -- close current tab
+keymap.set("n", "<leader>tn", ":tabn<CR>") -- go to next tab
+keymap.set("n", "<leader>tp", ":tabp<CR>") -- go to previous tab
+
+-- plugin keymaps
+
+-- vim-maximizer
+keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>")
+
+-- remember to set nvim-tree focus
+
+-- telescope
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>")
+keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>")
+keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
+
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+keymap.set("x", "d", '"_d')
 -- This file is automatically loaded by lazyvim.config.init
 local Util = require("lazyvim.util")
 
 local function map(mode, lhs, rhs, opts)
-  local keys = require("lazy.core.handler").handlers.keys
-  ---@cast keys LazyKeysHandler
-  -- do not create the keymap if a lazy keys handler exists
-  if not keys.active[keys.parse({ lhs, mode = mode }).id] then
-    opts = opts or {}
-    opts.silent = opts.silent ~= false
-    if opts.remap and not vim.g.vscode then
-      opts.remap = nil
+    local keys = require("lazy.core.handler").handlers.keys
+    ---@cast keys LazyKeysHandler
+    -- do not create the keymap if a lazy keys handler exists
+    if not keys.active[keys.parse({ lhs, mode = mode }).id] then
+        opts = opts or {}
+        opts.silent = opts.silent ~= false
+        if opts.remap and not vim.g.vscode then
+            opts.remap = nil
+        end
+        vim.keymap.set(mode, lhs, rhs, opts)
     end
-    vim.keymap.set(mode, lhs, rhs, opts)
-  end
 end
 
 -- better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+-- -- Move to window using the <ctrl> hjkl keys
+map("n", "<C-h>", "", { desc = "Go to left window", remap = false })
+map("n", "<C-j>", "", { desc = "Go to lower window", remap = false })
+map("n", "<C-k>", "", { desc = "Go to upper window", remap = false })
+map("n", "<C-l>", "", { desc = "Go to right window", remap = false })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -45,15 +93,15 @@ map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -- buffers
 if Util.has("bufferline.nvim") then
-  map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+    map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+    map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+    map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+    map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 else
-  map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-  map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
+    map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+    map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+    map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+    map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
@@ -64,10 +112,10 @@ map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsea
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
 map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / clear hlsearch / diff update" }
+    "n",
+    "<leader>ur",
+    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+    { desc = "Redraw / clear hlsearch / diff update" }
 )
 
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
@@ -105,8 +153,8 @@ map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
 if not Util.has("trouble.nvim") then
-  map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
-  map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
+    map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
+    map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 end
 
 -- stylua: ignore start
@@ -115,7 +163,7 @@ end
 map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() Util.toggle("spell") end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function() Util.toggle("wrap") end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>ul", function() Util.toggle_number() end, { desc = "Toggle Line Numbers" })
+map("n", "<leader>ul", "", { desc = "Toggle Line Numbers" })
 map("n", "<leader>ud", Util.toggle_diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function() Util.toggle("conceallevel", false, {0, conceallevel}) end, { desc = "Toggle Conceal" })
@@ -147,10 +195,10 @@ map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
-map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
-map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
-map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
-map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
+map("t", "<C-h>", "", { desc = "Go to left window" })
+map("t", "<C-j>", "", { desc = "Go to lower window" })
+map("t", "<C-k>", "", { desc = "Go to upper window" })
+map("t", "<C-l>", "", { desc = "Go to right window" })
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
 

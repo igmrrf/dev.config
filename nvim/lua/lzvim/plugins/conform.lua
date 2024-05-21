@@ -12,8 +12,6 @@ return {
       },
     },
     opts = {
-      -- LazyVim will use these options when formatting with the conform.nvim formatter
-      ---@type table<string, conform.FormatterUnit[]>
       formatters_by_ft = {
         lua = { "stylua" },
         sh = { "shfmt" },

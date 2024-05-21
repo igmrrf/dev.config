@@ -1,6 +1,4 @@
-local wezterm = require("wezterm")
 local module = {}
-local dimmer = { brightness = 0.1 }
 
 function module.apply_to_config(config)
 	config.window_background_opacity = 0.9

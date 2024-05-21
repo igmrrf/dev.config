@@ -18,12 +18,15 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "nvim-telescope/telescope.nvim",
+      "lewis6991/gitsigns.nvim",
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
 
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+      require("lzvim.config.keymaps")
       local defaults = require("cmp.config.default")()
       return {
         snippet = {

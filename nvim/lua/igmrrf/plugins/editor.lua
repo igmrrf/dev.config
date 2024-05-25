@@ -100,9 +100,42 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile" },
     main = "ibl",
-    opts = {
-      indent = { char = ":" },
-    },
+    config = function()
+      local highlight = {
+        "RainbowRed",
+        "RainbowYellow",
+        "RainbowBlue",
+        "RainbowOrange",
+        "RainbowGreen",
+        "RainbowViolet",
+        "RainbowCyan",
+      }
+      local hooks = require("ibl.hooks")
+      -- create the highlight groups in the highlight setup hook, so they are reset
+      -- every time the colorscheme changes
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+        vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
+      end)
+
+      -- vim.g.rainbow_delimiters = { highlight = highlight }
+      require("ibl").setup({
+        -- scope = {
+        -- highlight = highlight
+        -- },
+        indent = {
+          -- char = ":"
+          highlight = highlight,
+        },
+      })
+
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+    end,
   },
   {
     "akinsho/bufferline.nvim",
@@ -115,94 +148,128 @@ return {
     },
   },
   {
-    "goolord/alpha-nvim",
-    lazy = false,
-    config = function()
-      local alpha = require("alpha")
-      local dashboard = require("alpha.themes.dashboard")
+    "nvimdev/dashboard-nvim",
+    lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+    opts = function()
+      local logo = [[
+                                                                      
+                                                                      
+                                                                      
+████████╗██╗  ██╗███████╗    ██╗      █████╗ ███████╗██╗   ██╗
+╚══██╔══╝██║  ██║██╔════╝    ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝
+   ██║   ███████║█████╗      ██║     ███████║  ███╔╝  ╚████╔╝ 
+   ██║   ██╔══██║██╔══╝      ██║     ██╔══██║ ███╔╝    ╚██╔╝  
+   ██║   ██║  ██║███████╗    ███████╗██║  ██║███████╗   ██║   
+   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   
 
-      dashboard.section.header.val = {
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "████████╗██╗  ██╗███████╗    ██╗      █████╗ ███████╗██╗   ██╗",
-        "╚══██╔══╝██║  ██║██╔════╝    ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝",
-        "   ██║   ███████║█████╗      ██║     ███████║  ███╔╝  ╚████╔╝ ",
-        "   ██║   ██╔══██║██╔══╝      ██║     ██╔══██║ ███╔╝    ╚██╔╝  ",
-        "   ██║   ██║  ██║███████╗    ███████╗██║  ██║███████╗   ██║   ",
-        "   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
-        "                                                              ",
+██╗   ██╗██╗███╗   ███╗███╗   ███╗███████╗██████╗ 
+██║   ██║██║████╗ ████║████╗ ████║██╔════╝██╔══██╗
+██║   ██║██║██╔████╔██║██╔████╔██║█████╗  ██████╔╝
+╚██╗ ██╔╝██║██║╚██╔╝██║██║╚██╔╝██║██╔══╝  ██╔══██╗
+ ╚████╔╝ ██║██║ ╚═╝ ██║██║ ╚═╝ ██║███████╗██║  ██║
+  ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═╝
+                                                                      
+                                                                      
+                                                                      
+      ]]
+
+      logo = string.rep("\n", 8) .. logo .. "\n\n"
+
+      local opts = {
+        theme = "doom",
+        hide = {
+          statusline = false,
+        },
+        config = {
+          header = vim.split(logo, "\n"),
+          center = {
+            {
+              action = "Telescope find_files",
+              desc = " Find File",
+              icon = " ",
+              key = "f",
+            },
+            {
+              action = "ene | startinsert",
+              desc = " New File",
+              icon = " ",
+              key = "n",
+            },
+            {
+              action = "Telescope oldfiles",
+              desc = " Recent Files",
+              icon = " ",
+              key = "r",
+            },
+            {
+              action = "Telescope live_grep",
+              desc = " Find Text",
+              icon = " ",
+              key = "g",
+            },
+            { action = "TodoTelescope", desc = " Find Todos", icon = " ", key = "t" },
+            {
+              action = 'lua require("persistence").load()',
+              desc = " Restore Session",
+              icon = " ",
+              key = "s",
+            },
+            {
+              action = "Mason",
+              desc = " Mason",
+              icon = " ",
+              key = "m",
+            },
+            {
+              action = "Lazy",
+              desc = " Lazy",
+              icon = "󰒲 ",
+              key = "l",
+            },
+            {
+              action = "qa",
+              desc = " Quit",
+              icon = " ",
+              key = "q",
+            },
+          },
+          footer = function()
+            local stats = require("lazy").stats()
+            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+            return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
+          end,
+        },
       }
 
-      -- Set menu
-      --    dashboard.section.buttons.val = {
-      --      dashboard.button("e", "  > New File", "<cmd>ene<CR>"),
-      --      dashboard.button("SPC ee", "  > Toggle file explorer", "<cmd>NvimTreeToggle<CR>"),
-      --      dashboard.button("SPC ff", "󰱼  > Find File", "<cmd>Telescope find_files<CR>"),
-      --      dashboard.button("SPC fs", "  > Find Word", "<cmd>Telescope live_grep<CR>"),
-      --      dashboard.button("SPC wr", "󰁯  > Restore Session For Current Directory", "<cmd>SessionRestore<CR>"),
-      --      dashboard.button("q", "  > Quit NVIM", "<cmd>qa<CR>"),
-      --    }
+      for _, button in ipairs(opts.config.center) do
+        button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
+        button.key_format = "  %s"
+      end
 
-      -- Send config to alpha
-      alpha.setup(dashboard.opts)
+      -- close Lazy and re-open when the dashboard is ready
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "DashboardLoaded",
+          callback = function()
+            require("lazy").show()
+          end,
+        })
+      end
 
-      -- Disable folding on alpha buffer
-      vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
-
-      require("alpha").setup(require("alpha.themes.dashboard").config)
+      return opts
     end,
   },
-
-  -- {
-  --   "rmagatti/auto-session",
-  --   config = function()
-  --     local auto_session = require("auto-session")
-  --
-  --     auto_session.setup({
-  --       auto_restore_enabled = false,
-  --       auto_session_suppress_dirs = { "~/", "~/Dev/", "~/Downloads", "~/Documents", "~/Desktop/" },
-  --     })
-  --
-  --     local keymap = vim.keymap
-  --
-  --     keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" }) -- restore last workspace session for current directory
-  --     keymap.set("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" }) -- save workspace session for current working directory
-  --   end,
-  -- },
   {
-    "Shatur/neovim-session-manager",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    keys = {
-
-      {
-        "<leader>sl",
-        ":SessionManager load_last_session<CR>",
-        mode = { "n", "v" },
-        desc = "Format Injected Langs",
-      },
-    },
-    config = function()
-      local Path = require("plenary.path")
-      local config = require("session_manager.config")
-      require("session_manager").setup({
-        sessions_dir = Path:new(vim.fn.stdpath("data"), "sessions"), -- The directory where the session files will be saved.
-        autoload_mode = config.AutoloadMode.Disabled, -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
-      })
-    end,
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = { options = vim.opt.sessionoptions:get() },
+  -- stylua: ignore
+  keys = {
+    { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+    { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+    { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+  },
   },
   {
     "stevearc/dressing.nvim",

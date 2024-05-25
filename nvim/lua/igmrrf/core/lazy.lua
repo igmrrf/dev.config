@@ -15,11 +15,21 @@ require("lazy").setup({
   spec = {
     { import = "igmrrf.plugins" },
   },
-  checker = {
-    enabled = true,
-    notify = false,
+  defaults = {
+    lazy = false,
+    version = false,
   },
-  change_detection = {
-    notify = false,
+  install = { colorscheme = { "tokyonight", "catppuccin" } },
+  checker = { enabled = true },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
   },
 })

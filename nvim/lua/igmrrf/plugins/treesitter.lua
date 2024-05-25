@@ -36,6 +36,7 @@ return {
           "css",
           "prisma",
           "markdown",
+          "regex",
           "markdown_inline",
           "svelte",
           "graphql",

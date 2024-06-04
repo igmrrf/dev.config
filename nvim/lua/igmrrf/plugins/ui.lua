@@ -3,7 +3,9 @@ return {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    opts = {},
+    opts = {
+      transparent = true,
+    },
   },
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {

@@ -38,10 +38,11 @@ if command -v ngrok &>/dev/null; then
 
 # System
 alias edit="nvim ~/.config/.zprofile"
+alias config="nvim ~/.config/"
 alias ez="nvim ~/.zshrc"
 alias ek="nvim ~/.config/kitty/kitty.conf"
 alias labs="z ~/Desktop/Ajian/"
-alias submit="source ~/.zprofile"
+alias submit="source ~/.config/.zprofile"
 alias desktop="z ~/Desktop"
 alias downloads="z ~/Downloads"
 alias basket="z ~/Desktop/Basket/"
@@ -97,7 +98,7 @@ alias editskhd="nvim ~/.config/skhd/skhdrc"
 alias s="kitten ssh"
 
 # tmux 
-alias edittmux="nvim ~/.tmux.conf"
+alias tme="nvim ~/.config/.tmux.conf"
 alias tn="tmux new -s"
 alias tls="tmux ls"
 alias tde="tmux detach"
@@ -227,20 +228,21 @@ fd() {
                   -o -type d -print 2> /dev/null | fzf +m) &&
   cd "$dir"
 }
+
+fdv() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  nvim "$dir"
+}
+
 # fh - search in your command history and execute selected command
 fh() {
   eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
-vimfind() {
-  nvim $(fzf --height 50% --reverse)
-}
-
-vfd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  nvim "$dir"
+fzfv() {
+  nvim $(fzf --preview="cat {}" --height 50% --reverse)
 }
 
 eval "$(/opt/homebrew/bin/brew shellenv)"

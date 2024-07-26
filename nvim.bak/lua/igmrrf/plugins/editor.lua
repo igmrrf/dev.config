@@ -125,11 +125,7 @@ return {
 
       -- vim.g.rainbow_delimiters = { highlight = highlight }
       require("ibl").setup({
-        -- scope = {
-        -- highlight = highlight
-        -- },
-        indent = {
-          -- char = ":"
+        scope = {
           highlight = highlight,
         },
       })

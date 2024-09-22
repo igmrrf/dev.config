@@ -21,6 +21,10 @@ require("lazy").setup({
   },
   install = { colorscheme = { "tokyonight", "catppuccin" } },
   checker = { enabled = true },
+  change_detection = {
+    enabled = true,
+    notify = false,
+  },
   performance = {
     rtp = {
       disabled_plugins = {

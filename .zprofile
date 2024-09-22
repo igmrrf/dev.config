@@ -1,10 +1,10 @@
-export ANDROID_HOME=/Users/igmrrf/Library/Android/sdk 
+export ANDROID_HOME=/Users/tldo/Library/Android/sdk 
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-alias rmvimbuf="rm -f /Users/igmrrf/.local/state/nvim/swap/*"
-alias lsvimbuf="l /Users/igmrrf/.local/state/nvim/swap"
-alias cleanvim="rm -rf ~/.local/state/nvim && rm -rf ~/.local/share/nvim && rm -rf ~/.config/nvim && rm -rf ~/.cache/nvim"
+alias rmvimbuf="rm -f /Users/tldo/.local/state/nvim/swap/*"
+alias lsvimbuf="l /Users/tldo/.local/state/nvim/swap"
+alias cleanvim="rm -rf ~/.local/state/nvim && rm -rf ~/.local/share/nvim && rm -rf ~/.cache/nvim"
 
 brewSize(){
   for pkg in `brew list --formula -1 | grep -vE '\.|\.\.'`
@@ -35,10 +35,12 @@ if command -v ngrok &>/dev/null; then
     eval "$(ngrok completion)"
   fi
 
+alias todo="nvim ~/vaults/work/todo.md"
+alias func="nvim ~/Desktop/Basket/funckage/"
 
 # System
 alias edit="nvim ~/.config/.zprofile"
-alias config="nvim ~/.config/"
+alias config="cd ~/.config/ && nvim ~/.config/"
 alias ez="nvim ~/.zshrc"
 alias ek="nvim ~/.config/kitty/kitty.conf"
 alias labs="z ~/Desktop/Ajian/"
@@ -52,6 +54,10 @@ alias tmp="z ~/Desktop/tmp"
 
 alias work="z ~/vaults/work/ && nvim ."
 alias personal="z ~/vaults/personal/ && nvim ."
+
+# Nix Shell
+alias nx="nix-shell"
+alias nxcl="nix-collect-garbage"
 # Git
 alias gpom="git pull origin main"
 
@@ -68,6 +74,9 @@ alias dps="docker ps"
 alias dcd="docker-compose down"
 alias dcud="docker-compose up -d"
 alias dcu="docker-compose up"
+alias dco='docker container'
+alias dcol='docker container ls'
+alias dcola='docker container ls -a'
 
 
 # Hacks

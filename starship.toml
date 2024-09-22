@@ -9,6 +9,7 @@ $git_status\
 [](fg:#394260 bg:#212736)\
 $fill\
 $nodejs\
+$python\
 $rust\
 $golang\
 $php\

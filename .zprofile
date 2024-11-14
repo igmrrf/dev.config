@@ -42,6 +42,7 @@ alias func="nvim ~/Desktop/Basket/funckage/"
 alias edit="nvim ~/.config/.zprofile"
 alias config="cd ~/.config/ && nvim ~/.config/"
 alias ez="nvim ~/.zshrc"
+alias l="ls -a"
 alias ek="nvim ~/.config/kitty/kitty.conf"
 alias labs="z ~/Desktop/Ajian/"
 alias submit="source ~/.config/.zprofile"
@@ -87,7 +88,7 @@ alias ganache="docker rm -f ganache && docker run -d -p 7545:8545 --name ganache
 # Nvim
 alias ev="cd ~/.config/nvim && nvim"
 alias v="nvim"
-alias vim="nvim"
+alias vim="vim"
 alias notes="z ~/notes/ && nvim ~/notes/"
 alias vaults="z ~/vaults/ && nvim ~/vaults/"
 alias ss="nvim ~/notes/sync"
@@ -117,7 +118,7 @@ alias tki="tmux kill-session -t"
 # SmartX
 alias smartxapi="z ~/Desktop/Ajian/Contract/smart/smartx_v2_api && nvim"
 alias smartxadmin="z ~/Desktop/Ajian/Contracts/smartx/smartx_v2_admin && nvim"
-alias smartxapp="z ~/Desktop/Ajian/Contracts/smart/smartx_v2_app && nvim"
+alias smartxapp="z ~/Desktop/Ajian/Contracts/smartx/smartx_v2_app && nvim"
 alias smartx="z ~/Desktop/Ajian/Contracts/smartx/"
 
 # Kunda box
@@ -257,7 +258,10 @@ fzfv() {
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+ export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+eval "$(starship init zsh)"
 

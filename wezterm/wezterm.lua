@@ -9,10 +9,9 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
-
 background.apply_to_config(config)
 colorsheme.apply_to_config(config)
 editor.apply_to_config(config)
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
 return config

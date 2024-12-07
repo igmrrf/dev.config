@@ -1,15 +1,40 @@
 return {
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        lazy = true,
         opts = {
             ensure_installed = {
                 "html",
-                "isort",
-                "pylint",
-                "biome",
                 "cssls",
             },
         },
     },
 }
+
+-- return {
+--     "stevearc/conform.nvim",
+--     -- event = "VeryLazy",
+--     opts = {
+--         formatters_by_ft = {
+--             -- javascript = { "biome" },
+--             -- javascriptreact = { "biome" },
+--             -- json = { "biome" },
+--             -- jsonc = { "biome" },
+--             -- typescript = { "biome" },
+--             -- typescriptreact = { "biome" },
+--             -- astro = { "biome" },
+--             -- svelte = { "biome" },
+--             -- vue = { "prettier" },
+--             -- ["css"] = { "prettier" },
+--             -- ["scss"] = { "prettier" },
+--             -- ["less"] = { "prettier" },
+--             -- ["html"] = { "prettier" },
+--             -- ["yaml"] = { "prettier" },
+--             -- ["markdown"] = { "prettier" },
+--             -- ["markdown.mdx"] = { "prettier" },
+--             -- ["graphql"] = { "prettier" },
+--             -- ["handlebars"] = { "prettier" },
+--             -- python = { "isort", "black" },
+--         },
+--     },
+-- }
+--

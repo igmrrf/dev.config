@@ -27,6 +27,9 @@ shift + alt - t : yabai -m window --toggle float
 # maximize a window
 shift + alt - m : yabai -m window --toggle zoom-fullscreen
 
+# maximize a window
+shift + alt - w : open -a /Applications/WezTerm.app/Contents/MacOs/wezterm
+
 # balance out tree of windows (resize to occupy same area)
 shift + alt - e : yabai -m space --balance
 

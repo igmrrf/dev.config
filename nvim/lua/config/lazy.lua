@@ -22,9 +22,13 @@ require("lazy").setup({
         { import = "lazyvim.plugins.extras.editor.fzf" },
         { import = "lazyvim.plugins.extras.editor.harpoon2" },
         { import = "lazyvim.plugins.extras.editor.inc-rename" },
+        { import = "lazyvim.plugins.extras.editor.overseer" },
+        { import = "lazyvim.plugins.extras.editor.refactoring" },
 
         -- Formatting
         { import = "lazyvim.plugins.extras.formatting.prettier" },
+        { import = "lazyvim.plugins.extras.formatting.black" },
+        { import = "lazyvim.plugins.extras.formatting.biome" },
         -- Coding
         { import = "lazyvim.plugins.extras.coding.mini-comment" },
         { import = "lazyvim.plugins.extras.coding.mini-surround" },
@@ -49,6 +53,7 @@ require("lazy").setup({
         { import = "lazyvim.plugins.extras.lang.yaml" },
         -- Util
         { import = "lazyvim.plugins.extras.util.startuptime" },
+        { import = "lazyvim.plugins.extras.util.rest" },
         -- import/override with your plugins
         { import = "plugins" },
     },

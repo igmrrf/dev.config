@@ -1,0 +1,12 @@
+smartx
+exit
+ls
+cd home
+$nu.config-path
+exit
+sudo rm -rf `/Users/user/Library/Application Support/nushell/`
+ls `/Users/user/Library/Application Support/`
+ls `/Users/user/Library/Application Support/` | sort modified
+ls `/Users/user/Library/Application Support/` | sort-by modified
+clear
+exit

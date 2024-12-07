@@ -1,14 +1,3 @@
-tt.*
-.tests
-doc/tags
-debug
-.repro
-foo.*
-*.log
-data
-github-copilot/
-.ssh
 .zprofile
-
-
-yarn/
+.ssh
+yabai
